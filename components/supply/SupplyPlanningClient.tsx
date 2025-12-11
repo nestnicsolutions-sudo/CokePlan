@@ -10,7 +10,7 @@ import { SkuProduction } from "@/components/supply/SkuProduction";
 import { InventoryStatus } from "@/components/supply/InventoryStatus";
 
 const tabs = [
-  { id: "overall", label: "Production (Yesterday – Overall)" },
+  { id: "overall", label: "Production Summary" },
   { id: "plant", label: "Plant-Wise Production" },
   { id: "workcentre", label: "Work Centre-Wise Production" },
   { id: "sku", label: "SKU-Wise Production" },
@@ -22,11 +22,17 @@ export default function SupplyPlanningClient({
   skus,
   centres,
   inventory,
+  plannedRows = [],
+  actualRows = [],
+  yearMonthOptions = [],
 }: {
   plants: PlantProductionRow[];
   skus: SkuProductionRow[];
   centres: WorkCentreRow[];
   inventory: InventoryRow[];
+  plannedRows?: any[];
+  actualRows?: any[];
+  yearMonthOptions?: { year: number; month: number }[];
 }) {
   const [activeTab, setActiveTab] = useState("overall");
 
@@ -35,7 +41,7 @@ export default function SupplyPlanningClient({
       case "overall":
         return <ProductionOverall plants={plants} />;
       case "plant":
-        return <PlantProduction plants={plants} />;
+        return <PlantProduction plants={plants} plannedRows={plannedRows} actualRows={actualRows} yearMonthOptions={yearMonthOptions} />;
       case "workcentre":
         return <WorkCentreProduction centres={centres} />;
       case "sku":

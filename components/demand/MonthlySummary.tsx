@@ -44,34 +44,55 @@ export function MonthlySummary({
   const currentTotal = monthlyData.find((m) => m.month === currentMonth)?.total ?? 0;
   const prevTotal = monthlyData.find((m) => m.month === prevMonth)?.total ?? 0;
 
-  // Brand/Pack stand-ins using plant/article until brand/pack fields exist
-  const brandAgg: Record<string, number> = {};
+  // Plant-wise comparison - current month vs previous month
+  const plantCurrentMonth: Record<string, number> = {};
+  const plantPrevMonth: Record<string, number> = {};
+  
   forecastRows.forEach((r) => {
     const key = r.plantLocation || "Unknown";
-    brandAgg[key] = (brandAgg[key] ?? 0) + Math.round(r.predictedSellOut);
+    const month = r.forecastMonth || toMonthKey(r.forecastMonth);
+    
+    if (month === currentMonth) {
+      plantCurrentMonth[key] = (plantCurrentMonth[key] ?? 0) + Math.round(r.predictedSellOut);
+    } else if (month === prevMonth) {
+      plantPrevMonth[key] = (plantPrevMonth[key] ?? 0) + Math.round(r.predictedSellOut);
+    }
   });
-  const brandComparison = Object.entries(brandAgg)
-    .map(([brand, total]) => ({ brand, current: total, lastYear: total * 0.9, change: 0 }))
+  
+  const plantComparison = Object.keys(plantCurrentMonth)
+    .map((plant) => {
+      const current = plantCurrentMonth[plant] ?? 0;
+      const previous = plantPrevMonth[plant] ?? 0;
+      const change = previous ? Math.round(((current - previous) / previous) * 100) : 0;
+      return { plant, current, previous, change };
+    })
     .sort((a, b) => b.current - a.current)
-    .slice(0, 4)
-    .map((item) => ({
-      ...item,
-      change: item.lastYear ? Math.round(((item.current - item.lastYear) / item.lastYear) * 100) : 0,
-    }));
+    .slice(0, 4);
 
-  const packAgg: Record<string, number> = {};
+  // Pack-wise comparison - current month vs previous month
+  const packCurrentMonth: Record<string, number> = {};
+  const packPrevMonth: Record<string, number> = {};
+  
   forecastRows.forEach((r) => {
-    const key = r.sku || "Unknown";
-    packAgg[key] = (packAgg[key] ?? 0) + Math.round(r.predictedSellOut);
+    const key = r.packageSize || r.sku || "Unknown";
+    const month = r.forecastMonth || toMonthKey(r.forecastMonth);
+    
+    if (month === currentMonth) {
+      packCurrentMonth[key] = (packCurrentMonth[key] ?? 0) + Math.round(r.predictedSellOut);
+    } else if (month === prevMonth) {
+      packPrevMonth[key] = (packPrevMonth[key] ?? 0) + Math.round(r.predictedSellOut);
+    }
   });
-  const packComparison = Object.entries(packAgg)
-    .map(([pack, total]) => ({ pack, current: total, lastYear: total * 0.9, change: 0 }))
+  
+  const packComparison = Object.keys(packCurrentMonth)
+    .map((pack) => {
+      const current = packCurrentMonth[pack] ?? 0;
+      const previous = packPrevMonth[pack] ?? 0;
+      const change = previous ? Math.round(((current - previous) / previous) * 100) : 0;
+      return { pack, current, previous, change };
+    })
     .sort((a, b) => b.current - a.current)
-    .slice(0, 4)
-    .map((item) => ({
-      ...item,
-      change: item.lastYear ? Math.round(((item.current - item.lastYear) / item.lastYear) * 100) : 0,
-    }));
+    .slice(0, 4);
 
   const kpis = [
     {
@@ -89,25 +110,25 @@ export function MonthlySummary({
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         {kpis.map((kpi, index) => (
           <KpiCard key={index} kpi={kpi} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="glass p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <div className="glass p-4 lg:p-6">
+          <h3 className="text-base lg:text-lg font-semibold text-white mb-4">
             Monthly Demand Forecast (Dec 25 - Feb 26)
           </h3>
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={220} className="lg:h-[260px]">
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} />
+              <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+              <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} tick={{ fontSize: 11 }} />
               <Tooltip formatter={(v: any) => Math.round(Number(v)).toLocaleString()} />
-              <Legend />
+              <Legend wrapperStyle={{ fontSize: '11px' }} />
               <Line
                 type="monotone"
                 dataKey="total"
@@ -119,11 +140,11 @@ export function MonthlySummary({
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+          <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4">
             Daily Targets (Current Month)
           </h3>
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={220} className="lg:h-[260px]">
             <LineChart
               data={[
                 { day: "1", target: 520, actual: 500 },
@@ -149,23 +170,33 @@ export function MonthlySummary({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="glass p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Brand-wise Comparison
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white">
+              Plant-wise Comparison
+            </h3>
+            <span className="text-xs text-white/60">
+              Current vs Previous Month
+            </span>
+          </div>
           <div className="space-y-3">
-            {brandComparison.map((item) => (
-              <div key={item.brand} className="flex items-center justify-between">
-                <span className="text-sm font-medium text-white">
-                  {item.brand}
+            {plantComparison.map((item) => (
+              <div key={item.plant} className="flex items-center justify-between">
+                <span className="text-xs lg:text-sm font-medium text-white">
+                  {item.plant}
                 </span>
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-white/80">
+                <div className="flex items-center space-x-2 lg:space-x-4">
+                  <span className="text-xs lg:text-sm text-white/80">
                     {Math.round(item.current).toLocaleString()}
                   </span>
                   <span
-                    className={`text-sm font-medium ${
-                      item.change > 0 ? "text-red-300" : "text-red-200"
+                    className={`text-xs lg:text-sm font-medium px-2 py-1 rounded ${
+                      item.change > 0 
+                        ? "bg-green-500/20 text-green-300" 
+                        : item.change < 0
+                        ? "bg-red-500/20 text-red-300"
+                        : "bg-gray-500/20 text-gray-300"
                     }`}
+                    title={`Change from ${prevMonth} (${Math.round(item.previous).toLocaleString()}) to ${currentMonth} (${Math.round(item.current).toLocaleString()})`}
                   >
                     {item.change > 0 ? "+" : ""}
                     {item.change}%
@@ -174,26 +205,41 @@ export function MonthlySummary({
               </div>
             ))}
           </div>
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <p className="text-xs text-white/60">
+              Percentage shows change in demand forecast from {prevMonth} to {currentMonth}
+            </p>
+          </div>
         </div>
 
-        <div className="glass p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Pack-wise Comparison
-          </h3>
+        <div className="glass p-4 lg:p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-base lg:text-lg font-semibold text-white">
+              Pack-wise Comparison
+            </h3>
+            <span className="text-xs text-white/60">
+              Current vs Previous Month
+            </span>
+          </div>
           <div className="space-y-3">
             {packComparison.map((item) => (
               <div key={item.pack} className="flex items-center justify-between">
-                <span className="text-sm font-medium text-white">
+                <span className="text-xs lg:text-sm font-medium text-white">
                   {item.pack}
                 </span>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 lg:space-x-4">
                   <span className="text-sm text-white/80">
                     {Math.round(item.current).toLocaleString()}
                   </span>
                   <span
-                    className={`text-sm font-medium ${
-                      item.change > 0 ? "text-red-300" : "text-red-200"
+                    className={`text-sm font-medium px-2 py-1 rounded ${
+                      item.change > 0 
+                        ? "bg-green-500/20 text-green-300" 
+                        : item.change < 0
+                        ? "bg-red-500/20 text-red-300"
+                        : "bg-gray-500/20 text-gray-300"
                     }`}
+                    title={`Change from ${prevMonth} (${Math.round(item.previous).toLocaleString()}) to ${currentMonth} (${Math.round(item.current).toLocaleString()})`}
                   >
                     {item.change > 0 ? "+" : ""}
                     {item.change}%
@@ -201,6 +247,11 @@ export function MonthlySummary({
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <p className="text-xs text-white/60">
+              Percentage shows change in demand forecast from {prevMonth} to {currentMonth}
+            </p>
           </div>
         </div>
       </div>

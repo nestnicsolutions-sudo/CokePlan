@@ -12,11 +12,12 @@ import {
   mapSkuProduction,
   mapWorkCentreProduction,
   mapInventory,
+  getAvailableYearsMonths,
 } from "@/lib/loaders/supplyData";
 import SupplyPlanningClient from "@/components/supply/SupplyPlanningClient";
 
 const tabs = [
-  { id: "overall", label: "Production (Yesterday – Overall)" },
+  { id: "overall", label: "Production Summary" },
   { id: "plant", label: "Plant-Wise Production" },
   { id: "workcentre", label: "Work Centre-Wise Production" },
   { id: "sku", label: "SKU-Wise Production" },
@@ -24,13 +25,17 @@ const tabs = [
 ];
 
 export default function SupplyPlanningPage() {
-  // Planned: December (current month), Actual: November (last month)
+  // Planned: December (current month), Actual: All months (for filtering)
   const planned = loadSupplyPlanned(12);
-  const actual = loadSupplyActual(11);
+  const actualAll = loadSupplyActual(); // Load all actual data for filtering
+  const actual = loadSupplyActual(11); // For default display (November)
   const plants = mapPlantProduction(planned, actual);
   const skus = mapSkuProduction(planned, actual);
   const centres = mapWorkCentreProduction(actual);
   const inventory = mapInventory(actual);
+  
+  // Get available year/month options from actual data
+  const yearMonthOptions = getAvailableYearsMonths();
 
   return (
     <DashboardLayout title="Supply Planning">
@@ -39,6 +44,9 @@ export default function SupplyPlanningPage() {
         skus={skus}
         centres={centres}
         inventory={inventory}
+        plannedRows={planned}
+        actualRows={actualAll}
+        yearMonthOptions={yearMonthOptions}
       />
     </DashboardLayout>
   );

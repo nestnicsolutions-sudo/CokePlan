@@ -23,7 +23,7 @@ export function ProductionOverall({ plants }: { plants: PlantProductionRow[] }) 
       title: "Total Units Produced (Last Month)",
       value: totalActual.toLocaleString(),
       changeLabel: "vs last year",
-      change: ((totalActual - lastYear) / lastYear) * 100,
+      change: Math.round(((totalActual - lastYear) / lastYear) * 100),
       trend: "neutral" as const,
     },
     {
@@ -34,7 +34,7 @@ export function ProductionOverall({ plants }: { plants: PlantProductionRow[] }) 
     {
       title: "Production Gap",
       value: (totalActual - totalPlanned).toLocaleString(),
-      change: totalActual - totalPlanned === 0 ? 0 : undefined,
+      change: Math.round(((totalActual - totalPlanned) / totalPlanned) * 100) || 0,
       changeLabel: totalActual - totalPlanned > 0 ? "Over" : "Under",
       trend: (
         totalActual - totalPlanned > 0
@@ -53,24 +53,24 @@ export function ProductionOverall({ plants }: { plants: PlantProductionRow[] }) 
   }));
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         {kpis.map((kpi, index) => (
           <KpiCard key={index} kpi={kpi} />
         ))}
       </div>
 
-      <div className="glass p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="glass p-4 lg:p-6">
+        <h3 className="text-base lg:text-lg font-semibold text-white mb-4">
           Planned vs Actual Production
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={250} className="lg:h-[300px]">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} />
+            <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+            <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} tick={{ fontSize: 11 }} />
             <Tooltip formatter={(v: any) => Math.round(Number(v)).toLocaleString()} />
-            <Legend />
+            <Legend wrapperStyle={{ fontSize: '11px' }} />
             <Bar dataKey="Planned" fill="#e11d48" />
             <Bar dataKey="Actual" fill="#111111" />
           </BarChart>

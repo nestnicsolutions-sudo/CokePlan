@@ -20,15 +20,15 @@ export function KpiCard({ kpi }: KpiCardProps) {
   };
 
   return (
-    <div className="glass bg-red-600/80 border border-red-500/60 rounded-xl p-6 text-white">
+    <div className="glass bg-red-600/80 border border-red-500/60 rounded-xl p-4 lg:p-6 text-white">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-white/90">{kpi.title}</h3>
+        <h3 className="text-xs lg:text-sm font-medium text-white/90">{kpi.title}</h3>
         {kpi.trend && getTrendIcon()}
       </div>
       <div className="mt-2">
-        <p className="text-2xl font-semibold text-white">{kpi.value}</p>
+        <p className="text-xl lg:text-2xl font-semibold text-white">{kpi.value}</p>
         {kpi.change !== undefined && kpi.changeLabel && (
-          <p className={`text-sm mt-1 ${getChangeColor()}`}>
+          <p className={`text-xs lg:text-sm mt-1 ${getChangeColor()}`}>
             {kpi.change > 0 ? "+" : ""}
             {kpi.change}% {kpi.changeLabel}
           </p>

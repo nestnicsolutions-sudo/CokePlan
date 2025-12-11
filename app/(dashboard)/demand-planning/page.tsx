@@ -9,7 +9,7 @@ const tabs = [
   { id: "summary", label: "Monthly Demand Summary" },
   { id: "forecast", label: "Demand Forecast Data" },
   { id: "trends", label: "Demand Forecast & Daily Targets" },
-  { id: "actual", label: "Actual vs Forecasted & Error Metrics" },
+  { id: "actual", label: "Actual vs Forecasted" },
   { id: "alerts", label: "Demand Alerts" },
 ];
 

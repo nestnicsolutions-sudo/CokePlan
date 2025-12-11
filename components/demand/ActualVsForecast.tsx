@@ -34,95 +34,49 @@ export function ActualVsForecast({
     }, {});
 
   const fByMonth = byMonth(forecastRows);
-  const aByMonth = byMonth(actualRows);
 
-  const months = Array.from(new Set([...Object.keys(fByMonth), ...Object.keys(aByMonth)])).sort();
-  const comparisonData = months.map((m) => ({
+  const months = Object.keys(fByMonth).sort();
+  const forecastData = months.map((m) => ({
     month: m,
     forecasted: fByMonth[m] ?? 0,
-    actual: aByMonth[m] ?? 0,
   }));
 
-  const mape = (() => {
-    const errors = comparisonData
-      .filter((d) => d.actual > 0)
-      .map((d) => Math.abs((d.actual - d.forecasted) / d.actual));
-    if (!errors.length) return undefined;
-    return (errors.reduce((s, v) => s + v, 0) / errors.length) * 100;
-  })();
-
-  const rmse = (() => {
-    if (!comparisonData.length) return undefined;
-    const mse =
-      comparisonData.reduce((s, d) => s + Math.pow(d.actual - d.forecasted, 2), 0) /
-      comparisonData.length;
-    return Math.sqrt(mse);
-  })();
-
   return (
-    <div className="space-y-6">
-      <div className="glass p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">
-          Actual vs Forecasted Demand
+    <div className="space-y-4 lg:space-y-6">
+      <div className="glass p-4 lg:p-6">
+        <h3 className="text-base lg:text-lg font-semibold text-white mb-4">
+          Monthly Demand Forecast
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={comparisonData}>
+        <ResponsiveContainer width="100%" height={250} className="lg:h-[300px]">
+          <BarChart data={forecastData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} />
+            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+            <YAxis tickFormatter={(v) => Math.round(Number(v)).toLocaleString()} tick={{ fontSize: 12 }} />
             <Tooltip formatter={(v: any) => Math.round(Number(v)).toLocaleString()} />
-            <Legend />
-            <Bar dataKey="forecasted" fill="#e11d48" name="Forecasted" />
-            <Bar dataKey="actual" fill="#111111" name="Actual" />
+            <Legend wrapperStyle={{ fontSize: '12px' }} />
+            <Bar dataKey="forecasted" fill="#e11d48" name="Forecasted Demand" />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="glass p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">
-              Error Metrics
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm text-white/80">MAPE</p>
-                <p className="text-2xl font-semibold text-white">
-                  {mape === undefined ? "N/A" : `${mape.toFixed(0)}%`}
-                </p>
-                <p className="text-xs text-white/70 mt-1">
-                  Mean Absolute Percentage Error
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-white/80">RMSE</p>
-                <p className="text-2xl font-semibold text-white">
-                  {rmse === undefined ? "N/A" : rmse.toFixed(0)}
-                </p>
-                <p className="text-xs text-white/70 mt-1">
-                  Root Mean Square Error
-                </p>
-              </div>
-            </div>
-          </div>
-
-        <div className="glass p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="glass p-4 lg:p-6">
+          <h3 className="text-base lg:text-lg font-semibold text-white mb-4">
             Forecast Adjustments Tracking
           </h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="px-3 lg:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                     Date
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="px-3 lg:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                     User
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="px-3 lg:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                     SKU
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="px-3 lg:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                     Old
                   </th>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
@@ -152,7 +106,6 @@ export function ActualVsForecast({
             </table>
           </div>
         </div>
-      </div>
     </div>
   );
 }

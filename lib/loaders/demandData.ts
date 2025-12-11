@@ -1,5 +1,6 @@
 import { loadXlsxSheet } from "./xlsxLoader";
 import type { DemandForecastRow } from "@/lib/types";
+import { getIdentifierByGeneric } from "./keyIdentifiers";
 
 const numberify = (v: any) => {
   const n =
@@ -31,15 +32,19 @@ function mapForecastRows(rows: RowShape[]): DemandForecastRow[] {
           : r.Month
           ? String(r.Month)
           : "Unknown";
+      
+      const sku = String(r.Article ?? r.SKU_Key ?? r.Material ?? "");
+      const identifier = getIdentifierByGeneric(sku);
+      
       return {
-        sku: String(r.Article ?? r.SKU_Key ?? r.Material ?? ""),
-        brand: "",
-        flavor: "",
-        packageSize: "",
+        sku,
+        brand: identifier?.brand || "",
+        flavor: identifier?.flavour || "",
+        packageSize: identifier?.packageSize || "",
         distributor: String(r.Distributor ?? ""),
         plantLocation: String(r.Plant ?? r["Plant Name"] ?? ""),
         forecastMonth: month,
-        predictedSellOut: numberify(r.Predicted_Sell_Out ?? r.Pr_Forecast_Demand ?? r.Forecast ?? 0),
+        predictedSellOut: Math.round(numberify(r.Predicted_Sell_Out ?? r.Pr_Forecast_Demand ?? r.Forecast ?? 0)),
       };
     })
     .filter(
