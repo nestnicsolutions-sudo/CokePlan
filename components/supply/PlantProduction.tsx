@@ -27,7 +27,21 @@ export function PlantProduction({
   actualRows = [],
   yearMonthOptions = []
 }: SupplyDataProps) {
-  const [data, setData] = useState<PlantProductionRow[]>(plants);
+  // Hardcoded predicted values for current month
+  const hardcodedPredictions: Record<string, number> = {
+    "Lahore": 5563431,
+    "Gujranwala": 8164657,
+    "Faisalabad": 3279912,
+  };
+
+  // Initialize data with hardcoded predicted values
+  const initialData = plants.map((plant) => ({
+    ...plant,
+    planned: hardcodedPredictions[plant.plant] || plant.planned,
+    gap: (plant.actual || 0) - (hardcodedPredictions[plant.plant] || plant.planned),
+  }));
+
+  const [data, setData] = useState<PlantProductionRow[]>(initialData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlant, setSelectedPlant] = useState("");
   const [newPlanned, setNewPlanned] = useState("");
@@ -93,14 +107,9 @@ export function PlantProduction({
       "3004": "Faisalabad",
     };
     
-    // Add planned data
-    plannedRows.forEach((r: any) => {
-      const plant = String(r.Plant ?? r.plant ?? "Unknown").trim();
-      const plantName = plantNames[plant] || plant;
-      const planned = numberify(r.Pr_Forecast_Demand ?? r["Production in PHCs"] ?? 0);
-      
-      agg[plantName] ??= { plant: plantName, planned: 0, actual: 0, gap: 0 };
-      agg[plantName].planned += planned;
+    // Add hardcoded predicted values first
+    Object.entries(hardcodedPredictions).forEach(([plantName, predicted]) => {
+      agg[plantName] = { plant: plantName, planned: predicted, actual: 0, gap: 0 };
     });
     
     // Add filtered actual data
@@ -109,7 +118,7 @@ export function PlantProduction({
       const plantName = plantNames[plant] || plant;
       const actual = numberify(r["Production in PHCs"] ?? r.Actual ?? r.Production ?? 0);
       
-      agg[plantName] ??= { plant: plantName, planned: 0, actual: 0, gap: 0 };
+      agg[plantName] ??= { plant: plantName, planned: hardcodedPredictions[plantName] || 0, actual: 0, gap: 0 };
       agg[plantName].actual += actual;
     });
     

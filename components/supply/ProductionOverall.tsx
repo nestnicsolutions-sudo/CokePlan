@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 export function ProductionOverall({ plants }: { plants: PlantProductionRow[] }) {
-  const totalPlanned = plants.reduce((s, p) => s + p.planned, 0);
+  const totalPlanned = 17000000; // Hard coded value
   const totalActual = plants.reduce((s, p) => s + p.actual, 0);
   const lastYear = totalActual * 0.95; // simple proxy
 
