@@ -8,7 +8,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, title }: DashboardLayoutProps) {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen text-white">
       <Sidebar />
       <div className="flex-1 ml-64">
         <TopBar title={title} />
