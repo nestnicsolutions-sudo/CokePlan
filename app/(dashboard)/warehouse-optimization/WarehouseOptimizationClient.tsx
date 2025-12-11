@@ -8,16 +8,29 @@ import { ShipmentStatus } from "@/components/warehouse/ShipmentStatus";
 import { CarrierPerformance } from "@/components/warehouse/CarrierPerformance";
 import { LoadingOptimization } from "@/components/warehouse/LoadingOptimization";
 import { ShipmentLoadPrioritizationSection } from "@/components/warehouse/ShipmentLoadPrioritizationSection";
-import type { RawShipmentRow } from "@/lib/types";
+import type {
+  RawShipmentRow,
+  WarehouseMetrics,
+  ShipmentStatusRow,
+  CarrierPerformanceRow,
+} from "@/lib/types";
 
 type TabId = "overview" | "prioritization";
 
 interface WarehouseOptimizationClientProps {
   shipments: RawShipmentRow[];
+  metrics: WarehouseMetrics[];
+  shipmentStatus: ShipmentStatusRow[];
+  carriers: CarrierPerformanceRow[];
+  loadingTrend: Array<Record<string, number | string>>;
 }
 
 export default function WarehouseOptimizationClient({
   shipments,
+  metrics,
+  shipmentStatus,
+  carriers,
+  loadingTrend,
 }: WarehouseOptimizationClientProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
 
@@ -50,11 +63,11 @@ export default function WarehouseOptimizationClient({
       {/* Tab Content */}
       {activeTab === "overview" && (
         <div className="space-y-8">
-          <WarehouseOverview />
-          <TimeAnalysis />
-          <ShipmentStatus />
-          <CarrierPerformance />
-          <LoadingOptimization />
+          <WarehouseOverview metrics={metrics} />
+          <TimeAnalysis metrics={metrics} />
+          <ShipmentStatus shipments={shipmentStatus} />
+          <CarrierPerformance carriers={carriers} />
+          <LoadingOptimization metrics={metrics} loadingTrend={loadingTrend} />
         </div>
       )}
 

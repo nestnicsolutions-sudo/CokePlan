@@ -20,6 +20,9 @@ const excelSerialToMonth = (serial: any) => {
 
 type RowShape = Record<string, any>;
 
+const allowedPlants = new Set(["Lahore Plant", "Gujranwala Plant", "Faisalabad Plant"]);
+const inTargetWindow = (month: string) => month >= "2025-12" && month <= "2026-02";
+
 function mapForecastRows(rows: RowShape[]): DemandForecastRow[] {
   return rows
     .map((r) => {
@@ -40,7 +43,13 @@ function mapForecastRows(rows: RowShape[]): DemandForecastRow[] {
         predictedSellOut: numberify(r.Predicted_Sell_Out ?? r.Pr_Forecast_Demand ?? r.Forecast ?? 0),
       };
     })
-    .filter((r) => r.predictedSellOut > 0 && r.forecastMonth !== "Unknown");
+    .filter(
+      (r) =>
+        r.predictedSellOut > 0 &&
+        r.forecastMonth !== "Unknown" &&
+        inTargetWindow(r.forecastMonth) &&
+        allowedPlants.has(r.plantLocation)
+    );
 }
 
 function mapActualRows(rows: RowShape[]): DemandForecastRow[] {
@@ -63,7 +72,13 @@ function mapActualRows(rows: RowShape[]): DemandForecastRow[] {
         predictedSellOut: numberify(r.Sell_Out ?? r.Actual ?? 0),
       };
     })
-    .filter((r) => r.predictedSellOut > 0 && r.forecastMonth !== "Unknown");
+    .filter(
+      (r) =>
+        r.predictedSellOut > 0 &&
+        r.forecastMonth !== "Unknown" &&
+        inTargetWindow(r.forecastMonth) &&
+        allowedPlants.has(r.plantLocation)
+    );
 }
 
 const takeRecentMonths = (rows: DemandForecastRow[], count = 6) => {
@@ -74,11 +89,7 @@ const takeRecentMonths = (rows: DemandForecastRow[], count = 6) => {
 
 export function loadDemandForecast(): DemandForecastRow[] {
   const xlsxRows = loadXlsxSheet("Forecasted Sell out.xlsx", 0);
-  const mapped = mapForecastRows(xlsxRows);
-  const filteredPlants = mapped.filter((r) =>
-    ["3002", "3003", "3004"].includes(String(r.plantLocation))
-  );
-  return takeRecentMonths(filteredPlants, 6);
+  return mapForecastRows(xlsxRows);
 }
 
 export function loadDemandActual(): DemandForecastRow[] {
@@ -86,10 +97,6 @@ export function loadDemandActual(): DemandForecastRow[] {
   const xlsxRows = loadXlsxSheet("Sell out original.xlsx", 1);
   // Keep only recent years (>=2024) to reduce payload
   const filtered = xlsxRows.filter((r) => Number(r.Year ?? r.YEAR ?? 0) >= 2024);
-  const mapped = mapActualRows(filtered);
-  const filteredPlants = mapped.filter((r) =>
-    ["3002", "3003", "3004"].includes(String(r.plantLocation))
-  );
-  return takeRecentMonths(filteredPlants, 6);
+  return mapActualRows(filtered);
 }
 

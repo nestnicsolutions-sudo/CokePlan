@@ -1,5 +1,11 @@
 import WarehouseOptimizationClient from "./WarehouseOptimizationClient";
 import { loadActualShipmentData } from "@/lib/loaders/shipmentDataLoader";
+import {
+  loadWarehouseMetrics,
+  loadShipmentStatus,
+  loadCarrierPerformance,
+  loadLoadingTimeTrend,
+} from "@/lib/loaders/warehouseData";
 import { mockShipmentRows } from "@/lib/mockWarehousePrioritizationData";
 
 /**
@@ -20,5 +26,18 @@ export default function WarehouseOptimizationPage() {
     shipments = mockShipmentRows;
   }
 
-  return <WarehouseOptimizationClient shipments={shipments} />;
+  const metrics = loadWarehouseMetrics();
+  const shipmentStatus = loadShipmentStatus();
+  const carriers = loadCarrierPerformance();
+  const loadingTrend = loadLoadingTimeTrend();
+
+  return (
+    <WarehouseOptimizationClient
+      shipments={shipments}
+      metrics={metrics}
+      shipmentStatus={shipmentStatus}
+      carriers={carriers}
+      loadingTrend={loadingTrend}
+    />
+  );
 }

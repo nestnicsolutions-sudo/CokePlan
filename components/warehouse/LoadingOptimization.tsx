@@ -1,6 +1,6 @@
 "use client";
 
-import { mockLoadingTimeData, mockWarehouseMetrics } from "@/lib/mockWarehouseData";
+import type { WarehouseMetrics } from "@/lib/types";
 import { KpiCard } from "@/components/common/KpiCard";
 import {
   LineChart,
@@ -13,9 +13,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function LoadingOptimization() {
+export function LoadingOptimization({
+  metrics,
+  loadingTrend,
+}: {
+  metrics: WarehouseMetrics[];
+  loadingTrend: Array<Record<string, number | string>>;
+}) {
   // Find warehouse with maximum loading time
-  const maxLoadingWarehouse = mockWarehouseMetrics.reduce((max, warehouse) =>
+  const maxLoadingWarehouse = metrics.reduce((max, warehouse) =>
     warehouse.averageLoadingTime > max.averageLoadingTime ? warehouse : max
   );
 
@@ -40,7 +46,7 @@ export function LoadingOptimization() {
           Average Loading Time Trend
         </h4>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={mockLoadingTimeData}>
+          <LineChart data={loadingTrend}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
             <YAxis />

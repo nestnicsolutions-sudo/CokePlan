@@ -1,7 +1,7 @@
 "use client";
 
-import { mockShipmentStatus } from "@/lib/mockWarehouseData";
 import { KpiCard } from "@/components/common/KpiCard";
+import type { ShipmentStatusRow } from "@/lib/types";
 import {
   PieChart,
   Pie,
@@ -18,12 +18,12 @@ import {
 
 const COLORS = ["#e11d48", "#111111"];
 
-export function ShipmentStatus() {
-  const totalShipped = mockShipmentStatus.reduce(
+export function ShipmentStatus({ shipments }: { shipments: ShipmentStatusRow[] }) {
+  const totalShipped = shipments.reduce(
     (sum, item) => sum + item.shipped,
     0
   );
-  const totalDelayed = mockShipmentStatus.reduce(
+  const totalDelayed = shipments.reduce(
     (sum, item) => sum + item.delayed,
     0
   );
@@ -46,7 +46,7 @@ export function ShipmentStatus() {
     { name: "Delayed", value: totalDelayed },
   ];
 
-  const barData = mockShipmentStatus.map((item) => ({
+  const barData = shipments.map((item) => ({
     warehouse: item.warehouse,
     Shipped: item.shipped,
     Delayed: item.delayed,

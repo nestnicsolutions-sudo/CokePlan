@@ -171,61 +171,61 @@ export function ShipmentPrioritizationDetails({
                   <tr>
                     <td className="py-2 text-sm text-gray-900">Delay Factor</td>
                     <td className="py-2 text-sm text-gray-600 text-right">
-                      {(shipment.delayFactor * 100).toFixed(1)}%
+                      {(shipment.delayFactor * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm text-gray-600 text-right">
                       {(weights.delayFactorWeight * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm font-medium text-red-600 text-right">
-                      {(breakdown.delayContribution * 100).toFixed(1)}%
+                      {(breakdown.delayContribution * 100).toFixed(0)}%
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2 text-sm text-gray-900">Order Load</td>
                     <td className="py-2 text-sm text-gray-600 text-right">
-                      {(shipment.orderLoad * 100).toFixed(1)}%
+                      {(shipment.orderLoad * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm text-gray-600 text-right">
                       {(weights.orderLoadWeight * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm font-medium text-red-600 text-right">
-                      {(breakdown.orderContribution * 100).toFixed(1)}%
+                      {(breakdown.orderContribution * 100).toFixed(0)}%
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2 text-sm text-gray-900">LPN Load</td>
                     <td className="py-2 text-sm text-gray-600 text-right">
-                      {(shipment.lpnLoad * 100).toFixed(1)}%
+                      {(shipment.lpnLoad * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm text-gray-600 text-right">
                       {(weights.lpnLoadWeight * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm font-medium text-red-600 text-right">
-                      {(breakdown.lpnContribution * 100).toFixed(1)}%
+                      {(breakdown.lpnContribution * 100).toFixed(0)}%
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2 text-sm text-gray-900">Weight Load</td>
                     <td className="py-2 text-sm text-gray-600 text-right">
-                      {(shipment.weightLoad * 100).toFixed(1)}%
+                      {(shipment.weightLoad * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm text-gray-600 text-right">
                       {(weights.weightLoadWeight * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm font-medium text-red-600 text-right">
-                      {(breakdown.weightContribution * 100).toFixed(1)}%
+                      {(breakdown.weightContribution * 100).toFixed(0)}%
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2 text-sm text-gray-900">Carrier Risk</td>
                     <td className="py-2 text-sm text-gray-600 text-right">
-                      {(shipment.carrierRisk * 100).toFixed(1)}%
+                      {(shipment.carrierRisk * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm text-gray-600 text-right">
                       {(weights.carrierRiskWeight * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 text-sm font-medium text-red-600 text-right">
-                      {(breakdown.carrierContribution * 100).toFixed(1)}%
+                      {(breakdown.carrierContribution * 100).toFixed(0)}%
                     </td>
                   </tr>
                   <tr className="border-t-2 border-gray-400 font-semibold">
@@ -233,7 +233,7 @@ export function ShipmentPrioritizationDetails({
                       Priority Score
                     </td>
                     <td className="py-2 text-sm text-red-600 text-right">
-                      {(shipment.priorityScore * 100).toFixed(1)}%
+                      {(shipment.priorityScore * 100).toFixed(0)}%
                     </td>
                   </tr>
                 </tbody>

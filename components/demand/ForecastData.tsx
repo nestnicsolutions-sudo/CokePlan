@@ -21,6 +21,8 @@ export function ForecastData({ forecastRows }: { forecastRows: DemandForecastRow
   const [selectedSku, setSelectedSku] = useState("");
   const [newForecast, setNewForecast] = useState("");
   const [reason, setReason] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const handleAdjustForecast = () => {
     if (!selectedSku || !newForecast) return;
@@ -57,6 +59,8 @@ export function ForecastData({ forecastRows }: { forecastRows: DemandForecastRow
     }));
 
   const uniqueSkus = Array.from(new Set(data.map((row) => row.sku)));
+  const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
+  const pagedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="space-y-6">
@@ -122,8 +126,8 @@ export function ForecastData({ forecastRows }: { forecastRows: DemandForecastRow
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data.map((row, index) => (
-                <tr key={index} className="hover:bg-gray-50">
+              {pagedData.map((row, index) => (
+                <tr key={`${row.sku}-${index}`} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {row.sku}
                   </td>
@@ -152,6 +156,27 @@ export function ForecastData({ forecastRows }: { forecastRows: DemandForecastRow
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
+          <span>
+            Page {page} of {totalPages} (showing {pagedData.length} of {data.length})
+          </span>
+          <div className="space-x-2">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 

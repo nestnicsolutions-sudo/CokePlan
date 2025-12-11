@@ -60,7 +60,7 @@ export function ShipmentPrioritizationControls({
         {!isWeightSumValid && (
           <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-md">
             <p className="text-sm text-amber-800">
-              ⚠️ Warning: Weights sum to {(weightSum * 100).toFixed(1)}%. They
+              ⚠️ Warning: Weights sum to {(weightSum * 100).toFixed(0)}%. They
               should sum to 100% for accurate prioritization.
             </p>
           </div>
@@ -231,7 +231,7 @@ export function ShipmentPrioritizationControls({
                 isWeightSumValid ? "text-green-600" : "text-red-600"
               }`}
             >
-              {(weightSum * 100).toFixed(1)}%
+              {(weightSum * 100).toFixed(0)}%
             </span>
           </div>
         </div>
