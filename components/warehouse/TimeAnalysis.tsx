@@ -1,6 +1,6 @@
 "use client";
 
-import { mockWarehouseMetrics } from "@/lib/mockWarehouseData";
+import type { WarehouseMetrics } from "@/lib/types";
 import {
   BarChart,
   Bar,
@@ -12,8 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function TimeAnalysis() {
-  const chartData = mockWarehouseMetrics.map((warehouse) => ({
+export function TimeAnalysis({ metrics }: { metrics: WarehouseMetrics[] }) {
+  const chartData = metrics.map((warehouse) => ({
     warehouse: warehouse.warehouse,
     "Vehicle Assignment": warehouse.vehicleAssignmentTime,
     "Loading Process": warehouse.loadingProcessTime,

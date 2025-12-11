@@ -3,21 +3,121 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  /* Glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  --glass-radius: 16px;
+  --glass-blur: 16px;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at 20% 20%, rgba(225, 29, 72, 0.12), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(17, 17, 17, 0.14), transparent 40%),
+    linear-gradient(180deg, #0a0a0a 0%, #111827 25%, #0b0b0f 60%, #0a0a0a 100%);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--glass-radius);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base), background var(--transition-base);
+}
+
+.glass:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 48px rgba(0, 0, 0, 0.32);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0.55rem 1.1rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+    background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn-glass:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.card-surface {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card-surface:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+}
+
+::selection {
+  background: rgba(220, 38, 38, 0.35);
+  color: #fff;
+}
+
+/* Hover/focus highlight to red across the app */
+.hover\:bg-gray-50:hover,
+.hover\:bg-gray-100:hover,
+.hover\:bg-gray-200:hover,
+.hover\:bg-gray-900:hover {
+  background-color: rgba(220, 38, 38, 0.12) !important;
+}
+.focus\:ring-2:focus,
+.focus\:ring:focus {
+  --tw-ring-color: #dc2626 !important;
+}
+.focus\:ring-red-500:focus,
+.focus\:ring-red-600:focus,
+.hover\:border-gray-400:hover,
+.hover\:border-gray-300:hover {
+  border-color: #dc2626 !important;
+}
+/* Overrides to improve contrast on dark background */
+.bg-white {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+.border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+.text-gray-900 {
+  color: #f8fafc !important;
+}
+.text-gray-800 {
+  color: #e5e7eb !important;
+}
+.text-gray-700 {
+  color: #e5e7eb !important;
+}
+.text-gray-600 {
+  color: #d1d5db !important;
 }
 
 @layer utilities {

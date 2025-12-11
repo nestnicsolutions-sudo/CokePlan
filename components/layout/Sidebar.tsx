@@ -22,8 +22,8 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col w-64 bg-black text-white h-screen fixed left-0 top-0">
-      <div className="flex items-center justify-center h-16 px-4 border-b border-gray-800 pt-2">
+    <div className="flex flex-col w-64 text-white h-screen fixed left-0 top-0 px-3 pt-4 pb-6">
+      <div className="glass flex items-center justify-center h-16 px-4 mb-4">
         <Image
           src="/Images/Logo/cola-logo.png"
           alt="Coca-Cola Logo"
@@ -33,7 +33,7 @@ export function Sidebar() {
           priority
         />
       </div>
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex-1 px-1 py-4 space-y-2">
         {navigation.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -42,10 +42,10 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors",
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all",
                 isActive
-                  ? "bg-red-600 text-white"
-                  : "text-gray-300 hover:bg-gray-900 hover:text-white"
+                  ? "bg-red-600 text-white shadow-lg"
+                  : "glass hover:border-red-500/40 hover:text-white"
               )}
             >
               <Icon className="h-5 w-5" />

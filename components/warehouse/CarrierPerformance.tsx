@@ -1,6 +1,6 @@
 "use client";
 
-import { mockCarrierPerformance } from "@/lib/mockWarehouseData";
+import type { CarrierPerformanceRow } from "@/lib/types";
 import {
   BarChart,
   Bar,
@@ -12,9 +12,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function CarrierPerformance() {
+export function CarrierPerformance({ carriers }: { carriers: CarrierPerformanceRow[] }) {
   // Group by carrier
-  const carrierData = mockCarrierPerformance.reduce((acc, item) => {
+  const carrierData = carriers.reduce((acc, item) => {
     const existing = acc.find((c) => c.carrier === item.carrier);
     if (existing) {
       existing.volume += item.shipmentVolume;
@@ -25,7 +25,7 @@ export function CarrierPerformance() {
   }, [] as { carrier: string; volume: number }[]);
 
   // Group by carrier and warehouse
-  const groupedData = mockCarrierPerformance.reduce((acc, item) => {
+  const groupedData = carriers.reduce((acc, item) => {
     const key = item.carrier;
     if (!acc[key]) {
       acc[key] = { carrier: key, LHR: 0, GUJ: 0, FSB: 0 };

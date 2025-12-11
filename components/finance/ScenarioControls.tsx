@@ -147,7 +147,7 @@ export function ScenarioControls() {
           <div>
             <p className="text-sm text-red-700">Overall GP % NSR</p>
             <p className="text-lg font-semibold text-red-900">
-              {overallGPPercent.toFixed(2)}%
+              {overallGPPercent.toFixed(0)}%
             </p>
           </div>
           <div>

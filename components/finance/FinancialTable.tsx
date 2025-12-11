@@ -130,10 +130,10 @@ export function FinancialTable() {
                   ₨{row.gp.toLocaleString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {row.gsrPercentNsr.toFixed(2)}%
+                  {row.gsrPercentNsr.toFixed(0)}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-700">
-                  {row.gpPercentNsr.toFixed(2)}%
+                  {row.gpPercentNsr.toFixed(0)}%
                 </td>
               </tr>
             ))}

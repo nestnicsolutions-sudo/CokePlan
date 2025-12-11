@@ -87,7 +87,7 @@ export function ActualVsForecast({
               <div>
                 <p className="text-sm text-gray-600">MAPE</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {mape === undefined ? "N/A" : `${mape.toFixed(2)}%`}
+                  {mape === undefined ? "N/A" : `${mape.toFixed(0)}%`}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   Mean Absolute Percentage Error

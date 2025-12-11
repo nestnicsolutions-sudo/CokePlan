@@ -1,7 +1,7 @@
 "use client";
 
-import { mockWarehouseMetrics } from "@/lib/mockWarehouseData";
 import { KpiCard } from "@/components/common/KpiCard";
+import type { WarehouseMetrics } from "@/lib/types";
 import {
   BarChart,
   Bar,
@@ -13,14 +13,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function WarehouseOverview() {
-  const chartData = mockWarehouseMetrics.map((warehouse) => ({
+export function WarehouseOverview({ metrics }: { metrics: WarehouseMetrics[] }) {
+  const chartData = metrics.map((warehouse) => ({
     warehouse: warehouse.warehouse,
     "Total Weight Processed": warehouse.totalWeightProcessed,
     "Number of Shipments": warehouse.totalShipments,
   }));
 
-  const kpiCards = mockWarehouseMetrics.map((warehouse) => ({
+  const kpiCards = metrics.map((warehouse) => ({
     title: `Warehouse ${warehouse.warehouse}`,
     value: `${warehouse.totalShipments} shipments`,
     change: undefined,

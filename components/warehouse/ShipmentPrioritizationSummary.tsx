@@ -34,7 +34,7 @@ export function ShipmentPrioritizationSummary({
           <TrendingUp className="h-5 w-5 opacity-75" />
         </div>
         <p className="text-3xl font-bold">
-          {(summary.avgPriorityScore * 100).toFixed(1)}%
+          {(summary.avgPriorityScore * 100).toFixed(0)}%
         </p>
         <p className="text-xs opacity-75 mt-2">Based on current model weights</p>
       </div>
@@ -47,7 +47,7 @@ export function ShipmentPrioritizationSummary({
         <p className="text-3xl font-bold">{summary.loadImmediately}</p>
         <p className="text-xs opacity-75 mt-2">
           {summary.totalShipments > 0
-            ? `${((summary.loadImmediately / summary.totalShipments) * 100).toFixed(1)}%`
+            ? `${((summary.loadImmediately / summary.totalShipments) * 100).toFixed(0)}%`
             : "0%"}{" "}
           of total
         </p>
@@ -61,7 +61,7 @@ export function ShipmentPrioritizationSummary({
         <p className="text-3xl font-bold">{summary.keepWaiting}</p>
         <p className="text-xs opacity-75 mt-2">
           {summary.totalShipments > 0
-            ? `${((summary.keepWaiting / summary.totalShipments) * 100).toFixed(1)}%`
+            ? `${((summary.keepWaiting / summary.totalShipments) * 100).toFixed(0)}%`
             : "0%"}{" "}
           can wait
         </p>

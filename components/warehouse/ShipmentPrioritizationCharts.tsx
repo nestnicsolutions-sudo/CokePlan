@@ -86,7 +86,7 @@ export function ShipmentPrioritizationCharts({
                 border: "1px solid #e5e7eb",
                 borderRadius: "6px",
               }}
-              formatter={(value: number) => [`${value.toFixed(1)}%`, "Priority Score"]}
+              formatter={(value: number) => [`${value.toFixed(0)}%`, "Priority Score"]}
             />
             <Bar dataKey="score" fill="#dc2626" radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -107,7 +107,7 @@ export function ShipmentPrioritizationCharts({
                 cy="50%"
                 labelLine={false}
                 label={({ name, percent }) =>
-                  `${name}: ${((percent || 0) * 100).toFixed(1)}%`
+                  `${name}: ${((percent || 0) * 100).toFixed(0)}%`
                 }
                 outerRadius={100}
                 fill="#8884d8"
@@ -160,7 +160,7 @@ export function ShipmentPrioritizationCharts({
                   borderRadius: "6px",
                 }}
                 formatter={(value: number, name: string) => {
-                  if (name === "Score") return [`${value.toFixed(1)}%`, "Priority Score"];
+                  if (name === "Score") return [`${value.toFixed(0)}%`, "Priority Score"];
                   return [value, name];
                 }}
               />

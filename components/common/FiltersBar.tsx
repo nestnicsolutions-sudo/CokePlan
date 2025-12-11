@@ -59,7 +59,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+    <div className="glass p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
         <div className="lg:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -72,7 +72,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
               placeholder="SKU, Plant, etc."
               value={filters.search}
               onChange={(e) => handleFilterChange("search", e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full pl-10 pr-3 py-2 border border-white/20 rounded-md bg-white/5 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
@@ -84,7 +84,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
           <select
             value={filters.timePeriod}
             onChange={(e) => handleFilterChange("timePeriod", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {mockTimePeriods.map((option) => (
               <option key={option.value} value={option.value}>
@@ -101,7 +101,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
           <select
             value={filters.distributor}
             onChange={(e) => handleFilterChange("distributor", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {mockDistributors.map((option) => (
               <option key={option.value} value={option.value}>
@@ -118,7 +118,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
           <select
             value={filters.brand}
             onChange={(e) => handleFilterChange("brand", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {mockBrands.map((option) => (
               <option key={option.value} value={option.value}>
@@ -135,7 +135,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
           <select
             value={filters.packageSize}
             onChange={(e) => handleFilterChange("packageSize", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {mockPackageSizes.map((option) => (
               <option key={option.value} value={option.value}>
@@ -152,7 +152,7 @@ export function FiltersBar({ onFiltersChange }: FiltersBarProps) {
           <select
             value={filters.plant}
             onChange={(e) => handleFilterChange("plant", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {mockPlants.map((option) => (
               <option key={option.value} value={option.value}>

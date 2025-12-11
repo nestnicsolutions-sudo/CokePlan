@@ -53,7 +53,7 @@ export function ProfitabilityAnalysis() {
           </h4>
           <p className="text-lg font-semibold text-gray-900">{highestMargin.pack}</p>
           <p className="text-sm text-gray-500 mt-1">
-            GP % NSR: {highestMargin.gpPercentNsr.toFixed(2)}%
+            GP % NSR: {highestMargin.gpPercentNsr.toFixed(0)}%
           </p>
         </div>
 

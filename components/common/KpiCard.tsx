@@ -20,7 +20,7 @@ export function KpiCard({ kpi }: KpiCardProps) {
   };
 
   return (
-    <div className="bg-red-600 border border-red-700 rounded-lg shadow-sm p-6 text-white">
+    <div className="glass bg-red-600/80 border border-red-500/60 rounded-xl p-6 text-white">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-white/90">{kpi.title}</h3>
         {kpi.trend && getTrendIcon()}

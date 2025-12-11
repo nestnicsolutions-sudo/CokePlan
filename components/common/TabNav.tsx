@@ -10,17 +10,17 @@ interface TabNavProps {
 
 export function TabNav({ tabs, activeTab, onTabChange }: TabNavProps) {
   return (
-    <div className="border-b border-gray-200 mb-6">
-      <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+    <div className="mb-6">
+      <nav className="flex space-x-4" aria-label="Tabs">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={cn(
-              "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors",
+              "whitespace-nowrap py-2 px-3 rounded-full text-sm font-medium transition-all",
               activeTab === tab.id
-                ? "border-red-600 text-red-700"
-                : "border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-400"
+                ? "bg-red-600 text-white shadow-lg"
+                : "glass text-gray-100 hover:text-white hover:border-red-500/50"
             )}
           >
             {tab.label}

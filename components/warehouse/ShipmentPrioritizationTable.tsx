@@ -125,7 +125,7 @@ export function ShipmentPrioritizationTable({
                   </td>
                   <td className="py-3 px-4 text-sm text-right">
                     <span className="font-semibold text-red-600">
-                      {(shipment.priorityScore * 100).toFixed(1)}%
+                      {(shipment.priorityScore * 100).toFixed(0)}%
                     </span>
                   </td>
                   <td className="py-3 px-4 text-sm">
